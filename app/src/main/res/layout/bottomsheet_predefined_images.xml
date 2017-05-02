@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <ImageView
+        android:id="@+id/bs_btn_ok"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="end"
+        android:scaleType="centerInside"
+        android:background="@color/colorPrimaryLight"
+        android:contentDescription="@android:string/ok"
+        android:src="@drawable/ic_done_black_24dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/bs_predefined_picker"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:background="@color/colorPrimaryLight" />
+
+
+    <com.yarolegovich.ascipaintdc.view.ASCIIPreviewView
+        android:id="@+id/bs_predefined_preview"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginTop="36dp" />
+
+</FrameLayout>

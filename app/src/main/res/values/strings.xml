@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ASCIPaintDc</string>
+
+    <string name="tool_pencil">Pencil</string>
+    <string name="tool_eraser">Eraser</string>
+    <string name="tool_brush">Brush</string>
+    <string name="tool_eyedropper">Eyedropper</string>
+</resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/option_undo"
+        android:icon="@drawable/ic_undo_white_24dp"
+        android:title="Undo"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/option_redo"
+        android:icon="@drawable/ic_redo_white_24dp"
+        android:title="Redo"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/option_import"
+        android:title="Import"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/option_export"
+        android:title="Export"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/option_share"
+        android:title="Share"
+        app:showAsAction="never"/>
+
+</menu>

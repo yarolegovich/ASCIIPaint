@@ -1,0 +1,26 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="ClickableView">
+        <item name="android:clickable">true</item>
+        <item name="android:background">?android:selectableItemBackground</item>
+    </style>
+
+    <style name="BottomPanelOptionBase">
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="iconTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/secondaryText</item>
+    </style>
+
+    <style name="BottomPanelOption" parent="BottomPanelOptionBase">
+        <item name="android:background">?android:selectableItemBackground</item>
+    </style>
+
+</resources>
