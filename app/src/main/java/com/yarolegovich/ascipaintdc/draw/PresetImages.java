@@ -9,25 +9,25 @@ import java.util.List;
 
 public class PresetImages {
 
-    private List<PresetImage> images;
+    private List<ASCIIImage> images;
 
     public PresetImages() {
         images = Arrays.asList(
-                new PresetImage("Hello", new char[][]{
+                new ASCIIImage("Hello", new char[][]{
                         "H H EEE L   L   OOO".toCharArray(),
                         "H H E   L   L   O O".toCharArray(),
                         "HHH EEE L   L   O O".toCharArray(),
                         "H H E   L   L   O O".toCharArray(),
                         "H H EEE LLL LLL OOO".toCharArray()
                 }),
-                new PresetImage("Lol", new char[][]{
+                new ASCIIImage("Lol", new char[][]{
                         "LL      OOOOOO  LL    ".toCharArray(),
                         "LL      OO  OO  LL    ".toCharArray(),
                         "LL      OO  OO  LL    ".toCharArray(),
                         "LL      OO  OO  LL    ".toCharArray(),
                         "LLLLLL  OOOOOO  LLLLLL".toCharArray()
                 }),
-                new PresetImage("Smile", new char[][]{
+                new ASCIIImage("Smile", new char[][]{
                         "             OOOOOOOOOOO             ".toCharArray(),
                         "         OOOOOOOOOOOOOOOOOOO         ".toCharArray(),
                         "      OOOOOO  OOOOOOOOO  OOOOOO      ".toCharArray(),
@@ -47,7 +47,7 @@ public class PresetImages {
         );
     }
 
-    public List<PresetImage> getPredefined() {
+    public List<ASCIIImage> getPredefined() {
         return images;
     }
 }

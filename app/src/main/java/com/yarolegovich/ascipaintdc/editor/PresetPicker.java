@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.yarolegovich.ascipaintdc.R;
 import com.yarolegovich.ascipaintdc.adapter.PresetAdapter;
-import com.yarolegovich.ascipaintdc.draw.PresetImage;
+import com.yarolegovich.ascipaintdc.draw.ASCIIImage;
 import com.yarolegovich.ascipaintdc.view.ASCIIPreviewView;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class PresetPicker {
 
     private Listener listener;
 
-    public PresetPicker(View bsView, View overlayView, List<PresetImage> images) {
+    public PresetPicker(View bsView, View overlayView, List<ASCIIImage> images) {
         ClickHandler clickHandler = new ClickHandler();
 
         bottomSheet = BottomSheetBehavior.from(bsView);
@@ -111,7 +111,7 @@ public class PresetPicker {
         }
 
         @Override
-        public void onItemSelected(PresetImage image) {
+        public void onItemSelected(ASCIIImage image) {
             previewView.preview(image);
         }
     }
@@ -133,6 +133,6 @@ public class PresetPicker {
     }
 
     public interface Listener {
-        void onImagePicked(PresetImage image);
+        void onImagePicked(ASCIIImage image);
     }
 }

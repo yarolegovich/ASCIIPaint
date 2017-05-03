@@ -13,7 +13,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-import com.yarolegovich.ascipaintdc.draw.PresetImage;
+import com.yarolegovich.ascipaintdc.draw.ASCIIImage;
 
 /**
  * Created by yarolegovich on 02-May-17.
@@ -21,7 +21,7 @@ import com.yarolegovich.ascipaintdc.draw.PresetImage;
 
 public class ASCIIPreviewView extends TextView {
 
-    private PresetImage imageForPreview;
+    private ASCIIImage imageForPreview;
     private boolean shouldCalculateSize;
 
     public ASCIIPreviewView(Context context) {
@@ -84,7 +84,7 @@ public class ASCIIPreviewView extends TextView {
         setLineSpacing(paint.getTextSize(), 0);
     }
 
-    public void preview(PresetImage image) {
+    public void preview(ASCIIImage image) {
         imageForPreview = image;
         if (getWidth() == 0 || getHeight() == 0) {
             shouldCalculateSize = true;

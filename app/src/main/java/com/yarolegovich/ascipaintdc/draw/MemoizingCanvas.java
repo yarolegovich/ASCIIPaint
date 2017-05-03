@@ -1,7 +1,5 @@
 package com.yarolegovich.ascipaintdc.draw;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,13 +59,23 @@ public class MemoizingCanvas implements ASCIICanvas {
     }
 
     @Override
+    public void drawHorizontalToBuffer(CharSequence line, int index, int color) {
+        memoizeLineChange(line, index, color);
+        wrapped.drawHorizontalToBuffer(line, index, color);
+    }
+
+    @Override
     public void drawHorizontalToBuffer(CharSequence line, int row, int column, int color) {
-        int index = wrapped.toIndex(row, column);
+        memoizeLineChange(line, wrapped.toIndex(row, column), color);
+        wrapped.drawHorizontalToBuffer(line, row, column, color);
+    }
+
+    private void memoizeLineChange(CharSequence line, int index, int color) {
         for (int i = 0; i < line.length(); i++) {
             currentAction.onChange(wrapped, index + i, line.charAt(i), color);
         }
-        wrapped.drawHorizontalToBuffer(line, row, column, color);
     }
+
 
     @Override
     public void onDrawGestureStart() {
@@ -163,8 +171,13 @@ public class MemoizingCanvas implements ASCIICanvas {
     }
 
     @Override
-    public char getSymbol(int index) {
-        return wrapped.getSymbol(index);
+    public char getChar(int index) {
+        return wrapped.getChar(index);
+    }
+
+    @Override
+    public ASCIIImage toASCIIImage() {
+        return wrapped.toASCIIImage();
     }
 
     public void setListener(Listener listener) {

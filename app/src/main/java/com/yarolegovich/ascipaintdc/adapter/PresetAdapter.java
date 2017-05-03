@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yarolegovich.ascipaintdc.R;
-import com.yarolegovich.ascipaintdc.draw.PresetImage;
+import com.yarolegovich.ascipaintdc.draw.ASCIIImage;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class PresetAdapter extends RecyclerView.Adapter<PresetAdapter.ViewHolder> {
 
-    private List<PresetImage> images;
+    private List<ASCIIImage> images;
 
     private int activeColor;
     private int inactiveColor;
@@ -27,7 +27,7 @@ public class PresetAdapter extends RecyclerView.Adapter<PresetAdapter.ViewHolder
 
     private Listener listener;
 
-    public PresetAdapter(List<PresetImage> images) {
+    public PresetAdapter(List<ASCIIImage> images) {
         this.images = images;
         this.activePosition = 0;
     }
@@ -61,7 +61,7 @@ public class PresetAdapter extends RecyclerView.Adapter<PresetAdapter.ViewHolder
         this.listener = listener;
     }
 
-    public PresetImage getSelectedImage() {
+    public ASCIIImage getSelectedImage() {
         return images.get(activePosition);
     }
 
@@ -90,6 +90,6 @@ public class PresetAdapter extends RecyclerView.Adapter<PresetAdapter.ViewHolder
     }
 
     public interface Listener {
-        void onItemSelected(PresetImage image);
+        void onItemSelected(ASCIIImage image);
     }
 }

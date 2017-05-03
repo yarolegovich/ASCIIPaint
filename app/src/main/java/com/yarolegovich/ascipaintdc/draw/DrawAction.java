@@ -1,6 +1,5 @@
 package com.yarolegovich.ascipaintdc.draw;
 
-import android.util.Log;
 import android.util.SparseArray;
 
 /**
@@ -41,13 +40,13 @@ public class DrawAction {
         if (replacement == null) {
             replacement = new Replacement();
             replacement.set(
-                    symbol, canvas.getSymbol(index),
+                    symbol, canvas.getChar(index),
                     color, canvas.getColor(index));
             changes.put(index, replacement);
         } else {
             if (replacement.newSymbol != symbol || replacement.newColor != color) {
                 replacement.set(
-                        symbol, canvas.getSymbol(index),
+                        symbol, canvas.getChar(index),
                         color, canvas.getColor(index));
             }
         }

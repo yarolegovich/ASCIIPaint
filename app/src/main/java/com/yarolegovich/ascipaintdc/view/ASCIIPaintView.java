@@ -10,15 +10,18 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
 import com.yarolegovich.ascipaintdc.R;
 import com.yarolegovich.ascipaintdc.draw.ASCIICanvas;
+import com.yarolegovich.ascipaintdc.draw.ASCIIImage;
 import com.yarolegovich.ascipaintdc.draw.tool.PencilTool;
 import com.yarolegovich.ascipaintdc.draw.tool.Tool;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yarolegovich on 01-May-17.
@@ -28,7 +31,7 @@ public class ASCIIPaintView extends TextView {
 
     private SpannableStringBuilder drawBuffer;
     private SpannableStringBuilder temporaryBuffer;
-    private boolean isTemporaryEnabled;
+    private SpannableStringBuilder currentBuffer;
 
     private final float symbolWidth;
     private final float symbolHeight;
@@ -59,6 +62,7 @@ public class ASCIIPaintView extends TextView {
     {
         drawBuffer = new SpannableStringBuilder();
         temporaryBuffer = new SpannableStringBuilder();
+        currentBuffer = drawBuffer;
         canvas = new InternalASCIICanvas();
 
         currentTool = new PencilTool(canvas);
@@ -129,32 +133,34 @@ public class ASCIIPaintView extends TextView {
 
         @Override
         public void drawToBuffer(char c, int row, int column, int color) {
-            drawToBuffer(c, toIndex(row, column), color);
+            drawHorizontalToBuffer(String.valueOf(c), row, column, color);
         }
 
         @Override
         public void drawToBuffer(char c, int index, int color) {
-            if (isTemporaryEnabled) {
-                drawToBuffer(temporaryBuffer, c, index, color);
-            } else {
-                drawToBuffer(drawBuffer, c, index, color);
-            }
+            drawHorizontalToBuffer(String.valueOf(c), index, color);
         }
 
         @Override
         public void drawHorizontalToBuffer(CharSequence line, int row, int column, int color) {
-            if (isTemporaryEnabled) {
-                drawHorizontalToBuffer(temporaryBuffer, line, row, column, color);
-            } else {
-                drawHorizontalToBuffer(drawBuffer, line, row, column, color);
-            }
+            drawHorizontalToBuffer(line, toIndex(row, column), color);
+        }
+
+        @Override
+        public void drawHorizontalToBuffer(CharSequence line, int start, int color) {
+            int end = start + line.length();
+            removeColorSpansAt(start, end - 1);
+            currentBuffer.replace(start, end, line);
+            currentBuffer.setSpan(
+                    new ForegroundColorSpan(color), start, end,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         @Override
         public void setTemporaryBuffer(boolean enabled) {
-            isTemporaryEnabled = enabled;
+            currentBuffer = enabled ? temporaryBuffer : drawBuffer;
             temporaryBuffer.clear();
-            if (isTemporaryEnabled) {
+            if (currentBuffer == temporaryBuffer) {
                 temporaryBuffer.insert(0, drawBuffer);
             }
         }
@@ -166,29 +172,7 @@ public class ASCIIPaintView extends TextView {
 
         @Override
         public boolean isTempBufferEnabled() {
-            return isTemporaryEnabled;
-        }
-
-        private void drawToBuffer(SpannableStringBuilder buffer, char c, int index, int color) {
-            removeColorSpansAt(buffer, index, index);
-            buffer.replace(index, index + 1, String.valueOf(c));
-            if (c != getEmptyChar() && color != NO_COLOR) {
-                buffer.setSpan(
-                        new ForegroundColorSpan(color), index, index + 1,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-
-        private void drawHorizontalToBuffer(
-                SpannableStringBuilder buffer,
-                CharSequence line, int row, int column, int color) {
-            int start = toIndex(row, column);
-            int end = start + line.length();
-            removeColorSpansAt(buffer, start, end - 1);
-            buffer.replace(start, end, line);
-            buffer.setSpan(
-                    new ForegroundColorSpan(color), start, end,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return currentBuffer == temporaryBuffer;
         }
 
         @Override
@@ -201,17 +185,13 @@ public class ASCIIPaintView extends TextView {
         }
 
         @Override
-        public char getSymbol(int index) {
+        public char getChar(int index) {
             return drawBuffer.charAt(index);
         }
 
         @Override
         public void drawToScreen() {
-            if (isTemporaryEnabled) {
-                setText(temporaryBuffer);
-            } else {
-                setText(drawBuffer);
-            }
+            setText(currentBuffer);
         }
 
         @Override
@@ -259,23 +239,53 @@ public class ASCIIPaintView extends TextView {
             return row * (columns + 1) + column;
         }
 
-        private void removeColorSpansAt(SpannableStringBuilder buffer, int start, int end) {
-            ForegroundColorSpan[] spans = buffer.getSpans(start, end, ForegroundColorSpan.class);
+        @Override
+        public ASCIIImage toASCIIImage() {
+            int row = 0;
+            char[][] data = new char[rows][columns];
+            ASCIIImage.ColorRange[][] colors = new ASCIIImage.ColorRange[rows][];
+            for (int i = 0; i < drawBuffer.length(); i += (columns + 1)) {
+                drawBuffer.getChars(i, i + columns - 1, data[row], 0);
+                colors[row] = collectColorRangesOn(row);
+                row++;
+            }
+            ASCIIImage image = new ASCIIImage(data);
+            image.setColors(colors);
+            return image;
+        }
+
+        private ASCIIImage.ColorRange[] collectColorRangesOn(int row) {
+            List<ASCIIImage.ColorRange> ranges = new ArrayList<>();
+            int rowStartIndex = row * (columns + 1);
+            ForegroundColorSpan[] spans = drawBuffer.getSpans(
+                    rowStartIndex, rowStartIndex + columns - 1,
+                    ForegroundColorSpan.class);
             for (ForegroundColorSpan span : spans) {
-                int spanStart = buffer.getSpanStart(span);
-                int spanEnd = buffer.getSpanEnd(span);
-                buffer.removeSpan(span);
+                int rangeStart = drawBuffer.getSpanStart(span);
+                int rangeEnd = drawBuffer.getSpanEnd(span);
+                int columnStart = rangeStart - (rangeStart / (columns + 1)) * (columns + 1);
+                int columnEnd = columnStart + (rangeEnd - rangeStart);
+                ranges.add(new ASCIIImage.ColorRange(
+                        span.getForegroundColor(), columnStart,
+                        columnEnd));
+            }
+            return ranges.toArray(new ASCIIImage.ColorRange[ranges.size()]);
+        }
+
+        private void removeColorSpansAt(int start, int end) {
+            ForegroundColorSpan[] spans = currentBuffer.getSpans(start, end, ForegroundColorSpan.class);
+            for (ForegroundColorSpan span : spans) {
+                int spanStart = currentBuffer.getSpanStart(span);
+                int spanEnd = currentBuffer.getSpanEnd(span);
+                currentBuffer.removeSpan(span);
                 boolean reused = false;
                 if (spanStart < start) {
+                    currentBuffer.setSpan(span, spanStart, start, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     reused = true;
-                    buffer.setSpan(new ForegroundColorSpan(span.getForegroundColor()),
-                            spanStart, start, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
                 if (end + 1 < spanEnd) {
-                    ForegroundColorSpan s = reused ?
-                            new ForegroundColorSpan(span.getForegroundColor()) :
-                            span;
-                    buffer.setSpan(s, end + 1, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    span = reused ? new ForegroundColorSpan(span.getForegroundColor()) : span;
+                    currentBuffer.setSpan(span, end + 1, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
         }

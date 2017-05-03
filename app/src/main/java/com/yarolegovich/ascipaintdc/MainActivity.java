@@ -1,8 +1,10 @@
 package com.yarolegovich.ascipaintdc;
 
+import android.content.Intent;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,10 +16,10 @@ import android.widget.TextView;
 
 import com.jrummyapps.android.colorpicker.ColorPickerDialog;
 import com.jrummyapps.android.colorpicker.ColorPickerDialogListener;
-import com.yarolegovich.ascipaintdc.draw.ASCIICanvas;
+import com.yarolegovich.ascipaintdc.data.ShareManager;
 import com.yarolegovich.ascipaintdc.draw.MemoizingCanvas;
 import com.yarolegovich.ascipaintdc.draw.tool.EyedropperTool;
-import com.yarolegovich.ascipaintdc.draw.PresetImage;
+import com.yarolegovich.ascipaintdc.draw.ASCIIImage;
 import com.yarolegovich.ascipaintdc.draw.tool.PresetImageTool;
 import com.yarolegovich.ascipaintdc.draw.PresetImages;
 import com.yarolegovich.ascipaintdc.draw.tool.Tool;
@@ -34,8 +36,8 @@ import com.yarolegovich.ascipaintdc.view.TintableMenuItem;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         EyedropperTool.Listener, ColorPickerDialogListener,
         SizePickerDialog.Listener, SymbolPickerDialog.Listener,
-        ToolManager.Listener, PresetPicker.Listener,
-        PresetImageTransformMode.Listener, MemoizingCanvas.Listener {
+        ToolManager.Listener, PresetPicker.Listener, PresetImageTransformMode.Listener,
+        MemoizingCanvas.Listener, ShareManager.ImportCallback {
 
     private ColorCircleView currentColor;
     private TextView currentSymbol;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar toolbar;
 
     private ToolManager toolManager;
+    private ShareManager shareManager;
 
     private PresetPicker presetImagePicker;
     private PresetImageTransformMode presetTransformMode;
@@ -55,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        shareManager = new ShareManager(this);
+        shareManager.setImportCallback(this);
 
         PresetImages images = new PresetImages();
         presetImagePicker = new PresetPicker(
@@ -112,6 +118,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.option_redo:
                 canvas.redo();
                 break;
+            case R.id.option_import:
+                shareManager.importFromJson();
+                break;
+            case R.id.option_export:
+                shareManager.exportToJson(canvas);
+                break;
+            case R.id.option_share:
+                shareManager.shareImage(canvas);
+                break;
         }
         return true;
     }
@@ -120,6 +135,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         toolManager.saveStateTo(outState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        shareManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        shareManager.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        shareManager.onRequestPermissionResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -192,22 +225,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onImagePicked(PresetImage image) {
+    public void onImagePicked(ASCIIImage image) {
         canvas.setTemporaryBuffer(true);
         PresetImageTool imagePlacementTool = new PresetImageTool(canvas, image);
         imagePlacementTool.setColor(toolManager.getColor());
         paintView.setCurrentTool(imagePlacementTool);
 
-        canvas.onDrawGestureStart();
-        imagePlacementTool.onDrawStart(paintView.getWidth() * 0.5f, paintView.getHeight() * 0.5f);
-        canvas.drawToScreen();
-        canvas.onDrawGestureEnd();
+        executeCanvasDraw();
 
         if (presetTransformMode.isActive()) {
             presetTransformMode.finish();
         }
 
         presetTransformMode.startWith(imagePlacementTool);
+    }
+
+    @Override
+    public void onImageImported(ASCIIImage image) {
+        PresetImageTool placementTool = new PresetImageTool(canvas, image);
+        paintView.setCurrentTool(placementTool);
+        executeCanvasDraw();
+        paintView.setCurrentTool(toolManager.getCurrentTool());
+    }
+
+    @Override
+    public void onImageImportFailed() {
+        //TODO: notify user
     }
 
     @Override
@@ -223,6 +266,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onDrawHistoryChanged() {
         updateUndoRedoBtnsState();
+    }
+
+    private void executeCanvasDraw() {
+        Tool currentTool = paintView.getCurrentTool();
+        canvas.onDrawGestureStart();
+        currentTool.onDrawStart(paintView.getWidth() * 0.5f, paintView.getHeight() * 0.5f);
+        canvas.drawToScreen();
+        canvas.onDrawGestureEnd();
     }
 
     private void updateUndoRedoBtnsState() {
