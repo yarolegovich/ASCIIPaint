@@ -6,7 +6,7 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <com.yarolegovich.ascipaintdc.view.TintableIconTextView
+    <com.mrdeveloper.ascipaintdc.view.TintableIconTextView
         android:id="@+id/option_tool"
         style="@style/BottomPanelOption"
         android:layout_width="0dp"
@@ -39,7 +39,7 @@
     </LinearLayout>
 
 
-    <com.yarolegovich.ascipaintdc.view.TintableIconTextView
+    <com.mrdeveloper.ascipaintdc.view.TintableIconTextView
         android:id="@+id/option_presets"
         style="@style/BottomPanelOption"
         android:layout_width="0dp"
@@ -57,7 +57,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.yarolegovich.ascipaintdc.view.ColorCircleView
+        <com.mrdeveloper.ascipaintdc.view.ColorCircleView
             android:id="@+id/color_circle"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -71,7 +71,7 @@
     </LinearLayout>
 
 
-    <com.yarolegovich.ascipaintdc.view.TintableIconTextView
+    <com.mrdeveloper.ascipaintdc.view.TintableIconTextView
         android:id="@+id/option_size"
         style="@style/BottomPanelOption"
         android:layout_width="0dp"

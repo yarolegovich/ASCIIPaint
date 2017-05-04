@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.yarolegovich.ascipaintdc"
+        applicationId "com.mrdeveloper.ascipaintdc"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
@@ -28,7 +28,12 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
 
+    compile 'com.google.firebase:firebase-core:10.2.4'
+    compile 'com.google.firebase:firebase-database:10.2.4'
+
     compile 'com.jrummyapps:colorpicker:2.1.6'
 
     testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'
