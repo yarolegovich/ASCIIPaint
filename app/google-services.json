@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "741888535393",
-    "firebase_url": "https://asciipaint-9f66e.firebaseio.com",
-    "project_id": "asciipaint-9f66e",
-    "storage_bucket": "asciipaint-9f66e.appspot.com"
+    "project_number": "856502199604",
+    "firebase_url": "https://ascii-paint.firebaseio.com",
+    "project_id": "ascii-paint",
+    "storage_bucket": "ascii-paint.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:741888535393:android:30da875a8ac5cd31",
+        "mobilesdk_app_id": "1:856502199604:android:163a67d274a5d47f",
         "android_client_info": {
-          "package_name": "com.mrdeveloper.ascipaintdc"
+          "package_name": "com.mrdeveloper.asciipaint"
         }
       },
       "oauth_client": [
         {
-          "client_id": "741888535393-jq54kemrtngqic3dpp3ohc417qdb12kr.apps.googleusercontent.com",
+          "client_id": "856502199604-0cb25tgcb3lj10solc28rsg6tqpc0j09.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDQt5B1embpUfMJ5IJ1MpRdwAJSJqCp120"
+          "current_key": "AIzaSyAA7JWWHFrLwBIU-tKcpqtRIps1enIe5hg"
         }
       ],
       "services": {

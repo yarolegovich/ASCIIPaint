@@ -6,14 +6,14 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <com.mrdeveloper.ascipaintdc.view.TintableIconTextView
+    <com.mrdeveloper.asciipaint.view.TintableIconTextView
         android:id="@+id/option_tool"
         style="@style/BottomPanelOption"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:drawableTop="@drawable/ic_brush_black_24dp"
-        android:text="Tool" />
+        android:text="@string/bp_option_tool" />
 
     <LinearLayout
         android:id="@+id/options_symbol"
@@ -27,26 +27,26 @@
             android:id="@+id/symbol_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="X"
+            android:text="@string/default_draw_symbol"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Symbol"
+            android:text="@string/bp_option_symbol"
             android:textColor="@color/secondaryText" />
     </LinearLayout>
 
 
-    <com.mrdeveloper.ascipaintdc.view.TintableIconTextView
+    <com.mrdeveloper.asciipaint.view.TintableIconTextView
         android:id="@+id/option_presets"
         style="@style/BottomPanelOption"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:drawableTop="@drawable/ic_filter_black_24dp"
-        android:text="Presets" />
+        android:text="@string/bp_option_presets" />
 
 
     <LinearLayout
@@ -57,7 +57,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.mrdeveloper.ascipaintdc.view.ColorCircleView
+        <com.mrdeveloper.asciipaint.view.ColorCircleView
             android:id="@+id/color_circle"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -66,19 +66,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Color"
+            android:text="@string/bp_option_color"
             android:textColor="@color/secondaryText" />
     </LinearLayout>
 
 
-    <com.mrdeveloper.ascipaintdc.view.TintableIconTextView
+    <com.mrdeveloper.asciipaint.view.TintableIconTextView
         android:id="@+id/option_size"
         style="@style/BottomPanelOption"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:drawableTop="@drawable/ic_format_size_black_24dp"
-        android:text="Size" />
+        android:text="@string/bp_option_size" />
 
 
 </LinearLayout>

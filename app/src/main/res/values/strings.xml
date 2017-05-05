@@ -1,8 +1,40 @@
 <resources>
-    <string name="app_name">ASCIPaintDc</string>
+    <string name="app_name">ASCII Paint</string>
+
+    <string name="board_msg_import_failed">Import failed</string>
 
     <string name="tool_pencil">Pencil</string>
     <string name="tool_eraser">Eraser</string>
     <string name="tool_brush">Brush</string>
     <string name="tool_eyedropper">Eyedropper</string>
+
+    <string name="bs_hint_board_name">Board name</string>
+    <string name="bs_error_empty_name">Must be not empty</string>
+
+    <string name="bs_public_board">Public board</string>
+    <string name="bp_option_tool">Tool</string>
+    <string name="bp_option_symbol">Symbol</string>
+    <string name="bp_option_presets">Presets</string>
+    <string name="bp_option_color">Color</string>
+    <string name="bp_option_size">Size</string>
+
+    <string name="menu_editor_undo">Undo</string>
+    <string name="menu_editor_redo">Redo</string>
+    <string name="menu_editor_import">Import</string>
+    <string name="menu_editor_export">Export</string>
+    <string name="menu_editor_share">Share</string>
+
+    <string name="menu_img_drop_cancel">Cancel</string>
+    <string name="menu_img_drop_apply">Apply</string>
+
+    <string name="board_list_header_local">Local Boards</string>
+    <string name="board_list_header_public">Public Boards</string>
+
+    <string name="default_local_board_name">Your first board</string>
+
+    <string name="default_draw_symbol" translatable="false">X</string>
+    <string name="behavior_board_list_fab" translatable="false">
+        com.mrdeveloper.asciipaint.view.BoardListFabBehavior
+    </string>
+
 </resources>

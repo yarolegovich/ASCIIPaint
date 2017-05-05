@@ -25,7 +25,7 @@
         android:background="@color/colorPrimaryLight" />
 
 
-    <com.mrdeveloper.ascipaintdc.view.ASCIIPreviewView
+    <com.mrdeveloper.asciipaint.view.ASCIIPreviewView
         android:id="@+id/bs_predefined_preview"
         android:layout_width="match_parent"
         android:layout_height="240dp"

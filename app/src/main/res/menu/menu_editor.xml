@@ -4,28 +4,28 @@
     <item
         android:id="@+id/option_undo"
         android:icon="@drawable/ic_undo_white_24dp"
-        android:title="Undo"
+        android:title="@string/menu_editor_undo"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/option_redo"
         android:icon="@drawable/ic_redo_white_24dp"
-        android:title="Redo"
+        android:title="@string/menu_editor_redo"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/option_import"
-        android:title="Import"
+        android:title="@string/menu_editor_import"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/option_export"
-        android:title="Export"
+        android:title="@string/menu_editor_export"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/option_share"
-        android:title="Share"
+        android:title="@string/menu_editor_share"
         app:showAsAction="never"/>
 
 </menu>
